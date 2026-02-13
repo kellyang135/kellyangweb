@@ -4,9 +4,11 @@ import { useMemo } from "react";
 import Atom from "./Atom";
 import Bond from "./Bond";
 import { atoms, bonds, AtomData } from "@/lib/crystalData";
+import { bccPositions } from "@/lib/easterEgg";
 
 interface LatticeProps {
   visibleAtomIds: string[];
+  useBCC?: boolean;
 }
 
 const categoryColors: Record<AtomData["category"], string> = {
@@ -17,7 +19,7 @@ const categoryColors: Record<AtomData["category"], string> = {
   education: "#b794f4",
 };
 
-export default function Lattice({ visibleAtomIds }: LatticeProps) {
+export default function Lattice({ visibleAtomIds, useBCC = false }: LatticeProps) {
   const visibleAtoms = useMemo(
     () => atoms.filter((atom) => visibleAtomIds.includes(atom.id)),
     [visibleAtomIds]
@@ -35,16 +37,16 @@ export default function Lattice({ visibleAtomIds }: LatticeProps) {
   const atomPositions = useMemo(() => {
     const map: Record<string, [number, number, number]> = {};
     atoms.forEach((atom) => {
-      map[atom.id] = atom.position;
+      map[atom.id] = useBCC && bccPositions[atom.id] ? bccPositions[atom.id] : atom.position;
     });
     return map;
-  }, []);
+  }, [useBCC]);
 
   return (
     <group>
       {visibleBonds.map((bond, i) => (
         <Bond
-          key={`bond-${i}`}
+          key={`bond-${i}-${useBCC}`}
           start={atomPositions[bond.from]}
           end={atomPositions[bond.to]}
           opacity={0.15}
@@ -52,8 +54,8 @@ export default function Lattice({ visibleAtomIds }: LatticeProps) {
       ))}
       {visibleAtoms.map((atom) => (
         <Atom
-          key={atom.id}
-          position={atom.position}
+          key={`${atom.id}-${useBCC}`}
+          position={atomPositions[atom.id]}
           size={atom.size}
           color={categoryColors[atom.category]}
           glowIntensity={atom.featured ? 0.7 : 0.4}
