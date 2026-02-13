@@ -2,30 +2,21 @@
 
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import Atom from "./Atom";
-import Bond from "./Bond";
+import Lattice from "./Lattice";
+import { atoms } from "@/lib/crystalData";
 
 export default function CrystalCanvas() {
+  // For now, show all atoms (will be scroll-controlled later)
+  const allAtomIds = atoms.map((a) => a.id);
+
   return (
     <div className="fixed inset-0 z-0">
-      <Canvas camera={{ position: [0, 0, 10], fov: 50 }}>
-        <ambientLight intensity={0.2} />
+      <Canvas camera={{ position: [0, 0, 12], fov: 50 }}>
+        <ambientLight intensity={0.3} />
         <pointLight position={[10, 10, 10]} intensity={1} />
-
-        {/* Central atom */}
-        <Atom position={[0, 0, 0]} size={0.5} pulseSpeed={0.8} />
-
-        {/* Test surrounding atoms */}
-        <Atom position={[2, 0, 0]} size={0.3} />
-        <Atom position={[-2, 0, 0]} size={0.3} />
-        <Atom position={[0, 2, 0]} size={0.3} />
-
-        {/* Test bonds */}
-        <Bond start={[0, 0, 0]} end={[2, 0, 0]} />
-        <Bond start={[0, 0, 0]} end={[-2, 0, 0]} />
-        <Bond start={[0, 0, 0]} end={[0, 2, 0]} />
-
-        <OrbitControls enableZoom={false} enablePan={false} />
+        <pointLight position={[-10, -10, -10]} intensity={0.5} />
+        <Lattice visibleAtomIds={allAtomIds} />
+        <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.3} />
       </Canvas>
     </div>
   );
