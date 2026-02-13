@@ -1,26 +1,59 @@
+/* Google Fonts - must be first */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap');
+
 @import "tailwindcss";
 
+/* Crystal Theme Colors */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --crystal-bg: #0a0a14;
+  --crystal-atom: #4fd1c5;
+  --crystal-atom-glow: #81e6d9;
+  --crystal-bond: #ffffff20;
+  --crystal-accent: #f6ad55;
+  --crystal-text: #f7fafc;
+  --crystal-muted: #a0aec0;
 }
 
+/* Tailwind v4 Theme Configuration */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-crystal-bg: var(--crystal-bg);
+  --color-crystal-atom: var(--crystal-atom);
+  --color-crystal-atom-glow: var(--crystal-atom-glow);
+  --color-crystal-bond: var(--crystal-bond);
+  --color-crystal-accent: var(--crystal-accent);
+  --color-crystal-text: var(--crystal-text);
+  --color-crystal-muted: var(--crystal-muted);
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Base Body Styles */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--crystal-bg);
+  color: var(--crystal-text);
+  font-family: 'Inter', sans-serif;
+}
+
+/* Smooth Scroll Behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hide Scrollbar but Allow Scrolling */
+html {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Glassmorphism Panel */
+.glass-panel {
+  background: rgba(10, 10, 20, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
 }
