@@ -1,4 +1,5 @@
 import CrystalCanvas from "@/components/Crystal/CrystalCanvas";
+import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/sections/HeroSection";
 import AboutSection from "@/components/sections/AboutSection";
 import ExperienceSection from "@/components/sections/ExperienceSection";
@@ -10,6 +11,7 @@ export default function Home() {
   return (
     <main className="relative">
       <CrystalCanvas />
+      <Navigation />
       <HeroSection />
       <AboutSection />
       <ExperienceSection />
