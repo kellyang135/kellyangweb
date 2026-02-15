@@ -12,6 +12,8 @@
   --crystal-accent: #f6ad55;
   --crystal-text: #f7fafc;
   --crystal-muted: #a0aec0;
+  --lattice-back: #b794f4;
+  --lattice-mid: #8ab4dc;
 }
 
 /* Tailwind v4 Theme Configuration */
@@ -23,6 +25,8 @@
   --color-crystal-accent: var(--crystal-accent);
   --color-crystal-text: var(--crystal-text);
   --color-crystal-muted: var(--crystal-muted);
+  --color-lattice-back: var(--lattice-back);
+  --color-lattice-mid: var(--lattice-mid);
   --font-sans: 'Inter', sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
 }
