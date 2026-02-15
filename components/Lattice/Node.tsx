@@ -23,6 +23,16 @@ export default function Node({ node, isActive, onClick, animate = true, animatio
     opacity: [0.2, 0.6, 0.4, 0.2],
   } : undefined;
 
+  // Ambient pulse animation for living/breathing effect
+  // Plays after entry animation completes, stops when active
+  const ambientPulseAnimation = !isActive && !kellyGlowAnimation ? {
+    opacity: [0.2, 0.3, 0.2],
+    scale: [1, 1.05, 1],
+  } : undefined;
+
+  // Calculate delay for ambient animation (after entry + buffer)
+  const ambientDelay = animationDelay + 0.5 + 0.3; // entry delay + entry duration + buffer
+
   return (
     <motion.g
       initial={animate ? { scale: 0, opacity: 0 } : false}
@@ -31,7 +41,7 @@ export default function Node({ node, isActive, onClick, animate = true, animatio
       style={{ cursor: 'pointer' }}
       onClick={onClick}
     >
-      {/* Glow effect */}
+      {/* Glow effect with ambient pulse */}
       <motion.circle
         cx={node.px}
         cy={node.py}
@@ -42,11 +52,15 @@ export default function Node({ node, isActive, onClick, animate = true, animatio
         animate={
           isActive
             ? { scale: 1.3, opacity: 0.4 }
-            : kellyGlowAnimation || { scale: 1, opacity: 0.2 }
+            : kellyGlowAnimation || ambientPulseAnimation || { scale: 1, opacity: 0.2 }
         }
         transition={
-          isKelly && animate && !isActive
+          isActive
+            ? { duration: 0.3 }
+            : isKelly && animate
             ? { delay: 1.2, duration: 0.8, ease: 'easeInOut' }
+            : ambientPulseAnimation
+            ? { delay: ambientDelay, duration: 3, repeat: Infinity, ease: 'easeInOut' }
             : { duration: 0.3 }
         }
       />
