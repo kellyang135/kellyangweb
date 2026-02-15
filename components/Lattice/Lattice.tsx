@@ -40,26 +40,31 @@ export default function Lattice({ activeNode, onNodeClick, compressed = false }:
       transition={{ duration: 0.3 }}
     >
       {/* Bonds first (behind nodes) */}
-      {bonds.map((bond) => {
+      {bonds.map((bond, index) => {
         const fromNode = nodeMap.get(bond.from);
         const toNode = nodeMap.get(bond.to);
         if (!fromNode || !toNode) return null;
+        // Bonds start after nodes settle, then stagger in
+        const bondDelay = 0.6 + index * 0.04;
         return (
           <Bond
             key={`${bond.from}-${bond.to}`}
             from={fromNode}
             to={toNode}
+            animationDelay={bondDelay}
           />
         );
       })}
 
       {/* Nodes on top */}
-      {nodes.map((node) => (
+      {nodes.map((node, index) => (
         <Node
           key={node.id}
           node={node}
           isActive={activeNode === node.id}
           onClick={() => onNodeClick(node.id)}
+          animationDelay={0.1 + index * 0.08}
+          isKelly={node.id === 'kelly'}
         />
       ))}
     </motion.svg>

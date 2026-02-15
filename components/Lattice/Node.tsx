@@ -9,17 +9,25 @@ interface NodeProps {
   isActive: boolean;
   onClick: () => void;
   animate?: boolean;
+  animationDelay?: number;
+  isKelly?: boolean;
 }
 
-export default function Node({ node, isActive, onClick, animate = true }: NodeProps) {
+export default function Node({ node, isActive, onClick, animate = true, animationDelay = 0, isKelly = false }: NodeProps) {
   const size = getNodeSize(node.z);
   const color = getNodeColor(node.z);
+
+  // Kelly node gets a special entrance glow pulse after all animations complete
+  const kellyGlowAnimation = isKelly && animate ? {
+    scale: [1, 1.8, 1.4, 1],
+    opacity: [0.2, 0.6, 0.4, 0.2],
+  } : undefined;
 
   return (
     <motion.g
       initial={animate ? { scale: 0, opacity: 0 } : false}
       animate={{ scale: 1, opacity: 1 }}
-      transition={{ delay: 0.1 * Math.random(), duration: 0.5 }}
+      transition={{ delay: animationDelay, duration: 0.5, ease: 'easeOut' }}
       style={{ cursor: 'pointer' }}
       onClick={onClick}
     >
@@ -31,8 +39,16 @@ export default function Node({ node, isActive, onClick, animate = true }: NodePr
         fill={color}
         opacity={0.2}
         initial={{ scale: 1 }}
-        animate={isActive ? { scale: 1.3, opacity: 0.4 } : { scale: 1, opacity: 0.2 }}
-        transition={{ duration: 0.3 }}
+        animate={
+          isActive
+            ? { scale: 1.3, opacity: 0.4 }
+            : kellyGlowAnimation || { scale: 1, opacity: 0.2 }
+        }
+        transition={
+          isKelly && animate && !isActive
+            ? { delay: 1.2, duration: 0.8, ease: 'easeInOut' }
+            : { duration: 0.3 }
+        }
       />
 
       {/* Main node */}
