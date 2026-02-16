@@ -1,5 +1,5 @@
 // components/Panel/sections/EducationContent.tsx
-import { education, skills, honors } from '@/lib/content';
+import { education, skills, awards } from '@/lib/content';
 
 export default function EducationContent() {
   return (
@@ -30,14 +30,34 @@ export default function EducationContent() {
 
       <div>
         <h3 className="text-xl font-semibold text-crystal-text mb-3">Honors & Awards</h3>
-        <ul className="space-y-2">
-          {honors.map((honor, i) => (
-            <li key={i} className="text-crystal-muted text-sm flex items-start gap-2">
-              <span className="text-crystal-accent mt-1">★</span>
-              {honor}
-            </li>
+        <div className="space-y-4">
+          {awards.map((award, i) => (
+            <div key={i} className="border-l-2 border-crystal-accent/50 pl-4">
+              <h4 className="font-medium text-crystal-text">{award.title}</h4>
+              <p className="text-crystal-muted text-sm">{award.issuer} · {award.date}</p>
+              {award.place && (
+                <p className="text-crystal-accent text-sm">{award.place}</p>
+              )}
+              {award.description && (
+                <p className="text-crystal-muted text-sm mt-1">{award.description}</p>
+              )}
+              {award.awards && (
+                <ul className="mt-2 space-y-1">
+                  {award.awards.map((a, j) => (
+                    <li key={j} className="text-crystal-muted text-sm pl-2">- {a}</li>
+                  ))}
+                </ul>
+              )}
+              {award.additionalAwards && (
+                <ul className="mt-2 space-y-1">
+                  {award.additionalAwards.map((a, j) => (
+                    <li key={j} className="text-crystal-muted text-sm pl-2">- {a}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
     </div>
   );

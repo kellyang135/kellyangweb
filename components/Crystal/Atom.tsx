@@ -28,7 +28,8 @@ export default function Atom({ position, type, label, isActive, onClick, animati
 
   const isClickable = type === 'face';
   const baseSize = type === 'corner' ? 0.08 : 0.12;
-  const color = type === 'corner' ? '#4fd1c5' : '#68d391';
+  // Corner atoms are dimmer, face atoms are brighter
+  const color = type === 'corner' ? '#3a9d94' : '#7ee8a8';
 
   // Calculate animation values
   // Face atoms scale in with bounce, corner atoms fade in
@@ -63,11 +64,13 @@ export default function Atom({ position, type, label, isActive, onClick, animati
         <meshPhysicalMaterial
           color={color}
           transparent
-          opacity={(hovered || isActive ? 0.9 : 0.7) * animatedOpacity}
+          opacity={(hovered || isActive ? 0.95 : (isClickable ? 0.8 : 0.5)) * animatedOpacity}
           roughness={0.1}
           metalness={0.1}
           clearcoat={1}
           clearcoatRoughness={0.1}
+          emissive={isClickable ? color : undefined}
+          emissiveIntensity={isClickable ? 0.1 : 0}
         />
       </mesh>
 

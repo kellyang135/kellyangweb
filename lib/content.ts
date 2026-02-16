@@ -234,10 +234,75 @@ export const contact = {
   linkedin: "https://www.linkedin.com/in/kelly-yang06/",
 };
 
-export const honors = [
-  "Carnegie Hall Performer — American Protege International Piano and Strings Competition",
-  "Broadcom MASTERS Top 300 — National STEM competition semifinalist",
-  "Colorado Science and Engineering Fair Finalist",
-  "AMC Maryam Mirzakhani Certificate Winner — American Mathematics Competition",
-  "Royal Conservatory of Music Level 10 — Practical Exam",
+export interface Award {
+  title: string;
+  issuer: string;
+  date: string;
+  description?: string;
+  place?: string;
+  awards?: string[];
+  additionalAwards?: string[];
+}
+
+export const awards: Award[] = [
+  {
+    title: "National Junior Science and Humanities Symposium (JSHS) Finalist",
+    issuer: "Department of Defense",
+    date: "2024-05",
+    description: "2nd Place at the Wyoming and Eastern Colorado JSHS ($1500)",
+  },
+  {
+    title: "Colorado Science and Engineering Fair Finalist",
+    issuer: "CSEF",
+    date: "2024-04",
+    awards: [
+      "2nd place in the engineering category (2022)",
+      "3rd place in the energy category, regional ISEF alternate (2024)",
+      "Regeneron Biomedical Science Award ($500)",
+      "Physics Classroom Demonstration Award (Science Toy Magic)",
+      "American Vacuum Society Award",
+      "Energy Efficiency and Innovation (Platte River Power Authority)",
+      "Ralph Desch Memorial Technical Writing Award",
+    ],
+  },
+  {
+    title: "NCWIT Aspirations in Computing Affiliate Winner",
+    issuer: "Colorado NCWIT Aspirations in Computing",
+    date: "2024-01",
+  },
+  {
+    title: "American Junior Academy of Sciences",
+    issuer: "CWJAS",
+    date: "2023-04",
+    description: "Colorado-Wyoming Junior Academy of Sciences 65th Annual Symposium Session Winner",
+  },
+  {
+    title: "Carnegie Hall Performer",
+    issuer: "American Protégé International Piano and Strings Competition",
+    date: "2022-12",
+    place: "3rd Place Winner",
+  },
+  {
+    title: "Royal Conservatory of Music Level 10 Practical Exam",
+    issuer: "Royal Conservatory of Music",
+    date: "2022-07",
+  },
+  {
+    title: "AMC Maryam Mirzakhani Certificate Winner",
+    issuer: "American Mathematics Competition",
+    date: "2022-03",
+  },
+  {
+    title: "Broadcom MASTERS Top 300",
+    issuer: "Society for Science",
+    date: "2021-09",
+    additionalAwards: [
+      "3rd best in show at CSEF",
+      "1st in plant sciences category",
+      "David Young Memorial Award (American Statistical Association)",
+      "Elemer Bernath Memorial Technical Writing Award",
+      "Excellence in Horticulture Award (CSU)",
+      "Office of Naval Research Award",
+    ],
+  },
 ];

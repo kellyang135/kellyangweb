@@ -27,12 +27,9 @@ export default function Home() {
           activeNode ? 'lg:right-[60%] sm:right-[80%] opacity-0' : 'right-0 opacity-100'
         }`}
       >
-        <div className="text-center">
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-crystal-text tracking-tight">
-            Kelly Yang
-          </h1>
-          <p className="text-crystal-muted mt-2 text-sm sm:text-base">Click a node to explore</p>
-        </div>
+        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-light text-crystal-muted/70 tracking-wide lowercase">
+          kelly yang
+        </h1>
       </div>
 
       {/* Crystal */}
