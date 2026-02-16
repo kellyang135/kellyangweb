@@ -5,9 +5,13 @@ export default function AboutContent() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-3xl font-bold text-crystal-text mb-2">Kelly Yang</h2>
+        <h2 className="text-3xl font-bold text-crystal-text mb-2">About</h2>
         <p className="text-xl text-crystal-atom">{about.degree}</p>
         <p className="text-crystal-muted">{about.school} · {about.gradYear}</p>
+      </div>
+
+      <div>
+        <p className="text-crystal-text leading-relaxed">{about.bio}</p>
       </div>
 
       <div>

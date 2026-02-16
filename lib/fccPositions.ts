@@ -30,7 +30,7 @@ export const cornerAtoms: FCCAtom[] = [
 
 // 6 face-centered atoms (clickable, with content)
 export const faceAtoms: FCCAtom[] = [
-  { id: 'kelly', position: [0, 0, -HALF], type: 'face', label: 'Kelly Yang', contentId: 'kelly' },
+  { id: 'kelly', position: [0, 0, -HALF], type: 'face', label: 'About', contentId: 'kelly' },
   { id: 'contact', position: [0, 0, HALF], type: 'face', label: 'Contact', contentId: 'contact' },
   { id: 'projects', position: [0, -HALF, 0], type: 'face', label: 'Projects', contentId: 'projects' },
   { id: 'education', position: [0, HALF, 0], type: 'face', label: 'Education', contentId: 'education' },

@@ -22,6 +22,7 @@ export const about = {
   degree: "Joint B.S. in Materials Science & Engineering / EECS",
   school: "UC Berkeley",
   gradYear: "May 2028",
+  bio: "I'm interested in the experimental characterization of electronic materials and computationally guided materials design for device applications.",
   interests: ["Topological quantum materials", "Electronic skin sensors", "Thermal management", "Brain-computer interfaces"],
 };
 
@@ -229,7 +230,7 @@ export const skills = {
 };
 
 export const contact = {
-  email: "kellyang2006@gmail.com",
+  email: "kelly_yang@berkeley.edu",
   linkedin: "https://www.linkedin.com/in/kelly-yang06/",
 };
 
