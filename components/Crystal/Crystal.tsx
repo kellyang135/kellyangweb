@@ -73,10 +73,10 @@ function CrystalScene({ activeNode, onNodeClick, isPanelOpen }: CrystalSceneProp
     }
   });
 
-  // Auto-rotate when panel is closed (slow, elegant)
+  // Auto-rotate when panel is closed (very slow, elegant)
   useFrame((state, delta) => {
     if (groupRef.current && !isPanelOpen) {
-      groupRef.current.rotation.y += delta * 0.08;
+      groupRef.current.rotation.y += delta * 0.03;
     }
   });
 

@@ -21,10 +21,10 @@ export default function Home() {
 
   return (
     <main className="h-screen w-screen overflow-hidden bg-crystal-bg">
-      {/* Title overlay */}
+      {/* Title overlay - positioned above the cube */}
       <div
-        className={`fixed inset-0 flex items-center justify-center pointer-events-none z-10 transition-all duration-300 ${
-          activeNode ? 'lg:right-[60%] sm:right-[80%] opacity-0' : 'right-0 opacity-100'
+        className={`fixed inset-x-0 top-0 flex justify-center pt-8 sm:pt-12 pointer-events-none z-10 transition-all duration-300 ${
+          activeNode ? 'opacity-0' : 'opacity-100'
         }`}
       >
         <h1 className="text-5xl sm:text-6xl lg:text-7xl font-light text-crystal-muted/70 tracking-wide lowercase">

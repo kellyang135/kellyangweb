@@ -5,7 +5,7 @@ import ExperienceCard from './ExperienceCard';
 export default function IndustryContent() {
   return (
     <div className="space-y-6">
-      <h2 className="text-3xl font-bold text-crystal-text">Industry</h2>
+      <h2 className="text-3xl font-bold text-crystal-text">Experience</h2>
       <div className="space-y-4">
         {industry.map((exp) => (
           <ExperienceCard key={exp.id} experience={exp} accentColor="crystal-accent" />

@@ -35,7 +35,7 @@ export const faceAtoms: FCCAtom[] = [
   { id: 'projects', position: [0, -HALF, 0], type: 'face', label: 'Projects', contentId: 'projects' },
   { id: 'education', position: [0, HALF, 0], type: 'face', label: 'Education', contentId: 'education' },
   { id: 'research', position: [-HALF, 0, 0], type: 'face', label: 'Research', contentId: 'research' },
-  { id: 'industry', position: [HALF, 0, 0], type: 'face', label: 'Industry', contentId: 'industry' },
+  { id: 'industry', position: [HALF, 0, 0], type: 'face', label: 'Experience', contentId: 'industry' },
 ];
 
 export const allAtoms: FCCAtom[] = [...cornerAtoms, ...faceAtoms];

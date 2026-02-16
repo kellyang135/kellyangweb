@@ -24,7 +24,6 @@ export default function EducationContent() {
           <SkillRow label="Frameworks" items={skills.frameworks} />
           <SkillRow label="Databases" items={skills.databases} />
           <SkillRow label="Tools" items={skills.tools} />
-          <SkillRow label="Human Languages" items={skills.humanLanguages} />
         </div>
       </div>
 
@@ -36,7 +35,7 @@ export default function EducationContent() {
               <h4 className="font-medium text-crystal-text">{award.title}</h4>
               <p className="text-crystal-muted text-sm">{award.issuer} · {award.date}</p>
               {award.place && (
-                <p className="text-crystal-accent text-sm">{award.place}</p>
+                <p className="text-crystal-muted text-sm">{award.place}</p>
               )}
               {award.description && (
                 <p className="text-crystal-muted text-sm mt-1">{award.description}</p>

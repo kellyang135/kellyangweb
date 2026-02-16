@@ -53,10 +53,7 @@ export const research: Experience[] = [
     location: "Boulder, CO",
     duration: "October 2022 – August 2024",
     description: [
-      "2021-2022: Under Pressure — Piezoresistive pressure sensors for electronic skin",
-      "2022-2023: Skin PT — Pressure and temperature sensors for electronic skin",
-      "Engineered polymer-based piezoresistive sensors by optimizing material composition and microstructure",
-      "Improved signal sensitivity for prosthetics users",
+      "Developed electronic skin sensors for prosthetics applications in Prof. Xiao's soft electronics lab",
     ],
     atomId: "xiao-lab",
     featured: true,
@@ -68,9 +65,7 @@ export const research: Experience[] = [
     location: "Boulder, CO",
     duration: "2023 – 2024",
     description: [
-      "Enhancing Dry Cooling in Power Plants — Novel application of high-conductivity thermal ground planes",
-      "Designed dry-cooling system for thermoelectric plants to reduce fuel consumption and CO2 emissions in drought regions",
-      "Analyzed thermal performance data (NumPy/Pandas) across multiple cooling configurations",
+      "Researched thermal management solutions for improving power plant efficiency",
     ],
     atomId: "lee-lab",
     featured: true,
@@ -85,9 +80,9 @@ export const industry: Experience[] = [
     location: "Longmont, CO",
     duration: "June – August 2024",
     description: [
-      "Manufactured thermal ground planes (TGPs) for satellite and VR cooling applications",
-      "Produced 100+ units for clients",
-      "Automated thermal performance analysis using Python, reducing data processing time by 60%",
+      "Fabricated ultra-thin copper–water vapor chamber thermal ground planes (TGPs) for satellite and VR cooling applications",
+      "Executed precision die-cutting, multi-stage solvent cleaning, vacuum evacuation, deionized water charging, and hermetic sealing; verified integrity via pressure testing",
+      "Collaborated on TGP design iterations, optimizing wick structure, copper thickness, and fill ratio to improve capillary transport limits and in-plane thermal performance",
     ],
     atomId: "kelvin",
   },
@@ -111,7 +106,7 @@ export const industry: Experience[] = [
     duration: "June 2022 – March 2025",
     description: [
       "Summer 2022 intern, Spring 2025 extension program intern",
-      "CVI Storytelling System (Apr–Jun 2025): Developed an interactive storytelling system for a child with cortical visual impairment (CVI)",
+      "Developed an interactive storytelling system for a child with cortical visual impairment (CVI)",
       "Programmed Arduino-driven sensor, audio, and lighting interactions to enhance engagement",
     ],
   },
@@ -129,6 +124,36 @@ export const extracurricular: Experience[] = [
       "Supporting world's largest collegiate hackathon with 3,300+ hackers",
     ],
     atomId: "calhacks",
+  },
+  {
+    id: "teen-science-cafe",
+    title: "Youth Lead",
+    organization: "Teen Science Café — CU Boulder Science Discovery",
+    location: "Boulder, CO",
+    duration: "September 2022 – 2023",
+    description: [
+      "Planned STEM events connecting local teens with scientists in informal settings",
+    ],
+  },
+  {
+    id: "boulder-library",
+    title: "Teen Volunteer",
+    organization: "Boulder Public Library",
+    location: "Boulder, CO",
+    duration: "August 2021 – May 2025",
+    description: [
+      "Wrote book recommendations for teens and coordinated youth events with teen advisory board",
+    ],
+  },
+  {
+    id: "youth-opportunities",
+    title: "Youth Opportunities Intern",
+    organization: "City of Boulder",
+    location: "Boulder, CO",
+    duration: "June – July 2023",
+    description: [
+      "Collaborated with UNICEF-USA and local nonprofits on Child Friendly Cities Initiative",
+    ],
   },
   {
     id: "bohua",
@@ -169,36 +194,26 @@ export const projects: Project[] = [
   },
   {
     id: "eskin",
-    title: "Electronic Skin Sensors (Xiao Lab)",
-    tech: ["Materials Science", "Polymer Engineering"],
+    title: "Electronic Skin Sensors",
+    tech: ["Materials Science", "Polymer Engineering", "Sensor Design"],
     description: [
-      "Piezoresistive pressure sensors (Under Pressure)",
-      "Pressure and temperature sensors (Skin PT)",
-      "Optimized polymer material composition and microstructure for prosthetics applications",
+      "Under Pressure (2021-22): Investigated piezoresistive sensors in flexible substrates for prosthetics and robotics",
+      "Skin PT (2022-23): Integrated pressure and temperature sensing into multimodal e-skin using conductive elastomers",
+      "Engineered polymer-based sensors by optimizing material composition and microstructure, improving signal sensitivity",
     ],
     atomId: "eskin",
     featured: true,
   },
   {
     id: "thermal",
-    title: "Thermal Ground Planes for Power Plants (Lee Lab)",
+    title: "Thermal Ground Planes for Power Plants",
     tech: ["CAD", "NumPy/Pandas", "Thermal Analysis"],
     description: [
-      "Designed dry-cooling system using high-conductivity thermal ground planes",
-      "Goal: reduce fuel usage and CO2 emissions in drought-affected regions",
-      "Analyzed thermal performance data across multiple cooling configurations",
+      "Designed dry-cooling system for thermoelectric plants using high-conductivity thermal ground planes",
+      "Analyzed thermal performance data (NumPy/Pandas) across multiple cooling configurations",
+      "Goal: reduce fuel usage and CO2 emissions in drought-prone regions",
     ],
     atomId: "thermal",
-    featured: true,
-  },
-  {
-    id: "quantum",
-    title: "Topological Quantum Materials (Khan Lab)",
-    tech: ["Current Research", "Nanoelectronics"],
-    description: [
-      "Investigating topological quantum materials for nanoelectronics applications",
-    ],
-    atomId: "khan-lab",
     featured: true,
   },
 ];
@@ -226,7 +241,6 @@ export const skills = {
   frameworks: ["React", "React Native", "Node.js", "FastAPI", "PyTorch", "scikit-learn", "Three.js", "NumPy/Pandas", "MNE", "pymatgen"],
   databases: ["PostgreSQL", "MongoDB", "Redis", "REST APIs", "pgvector"],
   tools: ["Arduino", "CAD Software", "Git", "Linux", "Jupyter"],
-  humanLanguages: ["Chinese (Native)", "English (Native)", "Spanish (Limited Working)"],
 };
 
 export const contact = {
