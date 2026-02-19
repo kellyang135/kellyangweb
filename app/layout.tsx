@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { ScrollProvider } from "@/contexts/ScrollContext";
 import "./globals.css";
 
@@ -32,6 +33,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ScrollProvider>{children}</ScrollProvider>
+        <Analytics />
       </body>
     </html>
   );
