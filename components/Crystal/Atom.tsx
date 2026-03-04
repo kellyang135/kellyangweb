@@ -29,6 +29,9 @@ export default function Atom({ position, type, label, isActive, onClick, animati
   const [hovered, setHovered] = useState(false);
   const [orbitalIntensity, setOrbitalIntensity] = useState(0);
   const mousePosition = useAnimationStore((s) => s.mousePosition);
+  const setActiveAtom = useAnimationStore((s) => s.setActiveAtom);
+  const triggerBurst = useAnimationStore((s) => s.triggerBurst);
+  const setPhase = useAnimationStore((s) => s.setPhase);
   const groupRef = useRef<THREE.Group>(null);
   const originalPosition = useRef(new THREE.Vector3(...position));
   const currentOffset = useRef(new THREE.Vector3(0, 0, 0));
@@ -94,7 +97,19 @@ export default function Atom({ position, type, label, isActive, onClick, animati
     <group ref={groupRef}>
       <mesh
         ref={meshRef}
-        onClick={isClickable ? onClick : undefined}
+        onClick={isClickable ? (e) => {
+          e.stopPropagation();
+          const worldPos = new THREE.Vector3(...position);
+          setActiveAtom(label || null, worldPos);
+          triggerBurst();
+          setPhase('bursting');
+
+          // Transition to 'transitioning' after burst
+          setTimeout(() => setPhase('transitioning'), 400);
+
+          // Call original onClick
+          onClick?.();
+        } : undefined}
         onPointerOver={() => { if (isClickable) { setHovered(true); document.body.style.cursor = 'pointer'; }}}
         onPointerOut={() => { setHovered(false); document.body.style.cursor = 'auto'; }}
       >

@@ -3,20 +3,29 @@
 import { useState } from 'react';
 import { Crystal } from '@/components/Crystal';
 import { Panel } from '@/components/Panel';
+import { useAnimationStore } from '@/lib/useAnimationStore';
 
 export default function Home() {
   const [activeNode, setActiveNode] = useState<string | null>(null);
+  const phase = useAnimationStore((s) => s.phase);
+  const setPhase = useAnimationStore((s) => s.setPhase);
 
   const handleNodeClick = (nodeId: string) => {
     if (activeNode === nodeId) {
-      setActiveNode(null);
+      handleClose();
     } else {
       setActiveNode(nodeId);
+      // Phase transitions happen in Atom component
+      setTimeout(() => setPhase('open'), 900);
     }
   };
 
   const handleClose = () => {
-    setActiveNode(null);
+    setPhase('closing');
+    setTimeout(() => {
+      setActiveNode(null);
+      setPhase('idle');
+    }, 600);
   };
 
   return (
