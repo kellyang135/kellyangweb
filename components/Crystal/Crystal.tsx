@@ -8,6 +8,7 @@ import Atom from './Atom';
 import Bond from './Bond';
 import CubeWireframe from './CubeWireframe';
 import Particles from './Particles';
+import ShockWave from './ShockWave';
 import { allAtoms, bonds, faceAtoms, cornerAtoms } from '@/lib/fccPositions';
 import { useAnimationStore } from '@/lib/useAnimationStore';
 
@@ -107,6 +108,7 @@ function CrystalScene({ activeNode, onNodeClick, isPanelOpen }: CrystalSceneProp
       <pointLight position={[-10, -10, -10]} intensity={0.5} />
 
       <Particles key={isMobile ? 'mobile' : 'desktop'} />
+      <ShockWave />
 
       <group ref={groupRef}>
         <CubeWireframe animationProgress={animState.wireframe} />
