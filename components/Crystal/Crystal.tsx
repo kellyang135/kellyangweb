@@ -7,6 +7,7 @@ import * as THREE from 'three';
 import Atom from './Atom';
 import Bond from './Bond';
 import CubeWireframe from './CubeWireframe';
+import Particles from './Particles';
 import { allAtoms, bonds, faceAtoms, cornerAtoms } from '@/lib/fccPositions';
 import { useAnimationStore } from '@/lib/useAnimationStore';
 
@@ -43,6 +44,7 @@ function CrystalScene({ activeNode, onNodeClick, isPanelOpen }: CrystalSceneProp
   const raycaster = useRef(new THREE.Raycaster());
   const planeRef = useRef(new THREE.Plane(new THREE.Vector3(0, 0, 1), 0));
   const setMousePosition = useAnimationStore((s) => s.setMousePosition);
+  const isMobile = useAnimationStore((s) => s.isMobile);
 
   // Track mouse position in 3D space
   useFrame(({ camera, pointer }) => {
@@ -103,6 +105,8 @@ function CrystalScene({ activeNode, onNodeClick, isPanelOpen }: CrystalSceneProp
       <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} intensity={1} />
       <pointLight position={[-10, -10, -10]} intensity={0.5} />
+
+      <Particles key={isMobile ? 'mobile' : 'desktop'} />
 
       <group ref={groupRef}>
         <CubeWireframe animationProgress={animState.wireframe} />
