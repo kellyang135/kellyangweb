@@ -3,6 +3,7 @@
 import { useMemo, useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { useAnimationStore } from '@/lib/useAnimationStore';
 
 interface BondProps {
   start: [number, number, number];
@@ -13,6 +14,14 @@ interface BondProps {
 
 export default function Bond({ start, end, opacity = 0.2, animationProgress = 1 }: BondProps) {
   const lineRef = useRef<THREE.Line>(null);
+  const mousePosition = useAnimationStore((s) => s.mousePosition);
+  const midpoint = useMemo(() => {
+    return new THREE.Vector3(
+      (start[0] + end[0]) / 2,
+      (start[1] + end[1]) / 2,
+      (start[2] + end[2]) / 2
+    );
+  }, [start, end]);
 
   const geometry = useMemo(() => {
     const points = [new THREE.Vector3(...start), new THREE.Vector3(...end)];
@@ -27,7 +36,12 @@ export default function Bond({ start, end, opacity = 0.2, animationProgress = 1 
   useFrame(() => {
     if (lineRef.current) {
       const mat = lineRef.current.material as THREE.LineBasicMaterial;
-      mat.opacity = opacity * animationProgress;
+
+      // Calculate distance from mouse to bond midpoint
+      const distance = mousePosition.distanceTo(midpoint);
+      const proximityBoost = distance < 1.5 ? (1 - distance / 1.5) * 0.3 : 0;
+
+      mat.opacity = (opacity + proximityBoost) * animationProgress;
     }
   });
 
