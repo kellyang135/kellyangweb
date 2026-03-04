@@ -4,6 +4,7 @@ import { useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
+import { useAnimationStore } from '@/lib/useAnimationStore';
 
 // Easing function for bounce effect
 function easeOutBack(x: number): number {
@@ -25,6 +26,12 @@ export default function Atom({ position, type, label, isActive, onClick, animati
   const meshRef = useRef<THREE.Mesh>(null);
   const glowRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
+  const mousePosition = useAnimationStore((s) => s.mousePosition);
+  const groupRef = useRef<THREE.Group>(null);
+  const originalPosition = useRef(new THREE.Vector3(...position));
+  const currentOffset = useRef(new THREE.Vector3(0, 0, 0));
+  const tempVec = useRef(new THREE.Vector3());
+  const zeroVec = useRef(new THREE.Vector3(0, 0, 0));
 
   const isClickable = type === 'face';
   const baseSize = type === 'corner' ? 0.08 : 0.12;
@@ -37,23 +44,48 @@ export default function Atom({ position, type, label, isActive, onClick, animati
   const animatedScale = isFace ? easeOutBack(Math.min(animationProgress, 1)) : animationProgress;
   const animatedOpacity = animationProgress;
 
-  // Subtle pulse for clickable atoms + animation
   useFrame((state) => {
-    if (meshRef.current) {
-      if (isClickable && !isActive && animationProgress >= 1) {
-        const pulse = Math.sin(state.clock.elapsedTime * 2) * 0.02;
-        meshRef.current.scale.setScalar(animatedScale * (1 + pulse));
-      } else {
-        meshRef.current.scale.setScalar(animatedScale);
-      }
+    if (!groupRef.current || !meshRef.current) return;
+
+    // Calculate distance to mouse (reusing pre-allocated vectors)
+    const toMouse = tempVec.current.copy(mousePosition).sub(originalPosition.current);
+    const distance = toMouse.length();
+
+    // Magnetic attraction (subtle drift toward cursor)
+    const attractionRadius = 1.5;
+    if (distance < attractionRadius && distance > 0.1) {
+      const strength = 0.03 * (1 - distance / attractionRadius);
+      const targetOffset = toMouse.normalize().multiplyScalar(strength);
+      currentOffset.current.lerp(targetOffset, 0.1);
+    } else {
+      currentOffset.current.lerp(zeroVec.current, 0.05);
     }
+
+    // Apply offset to group position
+    groupRef.current.position.set(
+      position[0] + currentOffset.current.x,
+      position[1] + currentOffset.current.y,
+      position[2] + currentOffset.current.z
+    );
+
+    // Proximity glow (increase scale and brightness when cursor near)
+    const proximityGlow = distance < attractionRadius ? (1 - distance / attractionRadius) * 0.1 : 0;
+
+    // Pulse animation for clickable atoms
+    if (isClickable && !isActive && animationProgress >= 1) {
+      const pulse = Math.sin(state.clock.elapsedTime * 2) * 0.02;
+      meshRef.current.scale.setScalar(animatedScale * (1 + pulse + proximityGlow));
+    } else {
+      meshRef.current.scale.setScalar(animatedScale * (1 + proximityGlow));
+    }
+
     if (glowRef.current) {
-      glowRef.current.scale.setScalar(animatedScale * 1.5);
+      glowRef.current.scale.setScalar(animatedScale * (1.5 + proximityGlow * 2));
     }
   });
 
   return (
-    <group position={position}>
+    <group ref={groupRef}>
       <mesh
         ref={meshRef}
         onClick={isClickable ? onClick : undefined}
