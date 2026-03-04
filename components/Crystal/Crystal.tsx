@@ -8,6 +8,7 @@ import Atom from './Atom';
 import Bond from './Bond';
 import CubeWireframe from './CubeWireframe';
 import { allAtoms, bonds, faceAtoms, cornerAtoms } from '@/lib/fccPositions';
+import { useAnimationStore } from '@/lib/useAnimationStore';
 
 // Animation phases with timing (in seconds)
 const ANIMATION_TIMING = {
@@ -39,6 +40,19 @@ function CrystalScene({ activeNode, onNodeClick, isPanelOpen }: CrystalSceneProp
     bonds: 0,
   });
   const startTimeRef = useRef<number | null>(null);
+  const raycaster = useRef(new THREE.Raycaster());
+  const planeRef = useRef(new THREE.Plane(new THREE.Vector3(0, 0, 1), 0));
+  const setMousePosition = useAnimationStore((s) => s.setMousePosition);
+
+  // Track mouse position in 3D space
+  useFrame(({ camera, pointer }) => {
+    raycaster.current.setFromCamera(pointer, camera);
+    const intersectPoint = new THREE.Vector3();
+    const result = raycaster.current.ray.intersectPlane(planeRef.current, intersectPoint);
+    if (result) {
+      setMousePosition(intersectPoint);
+    }
+  });
 
   // Entry animation using useFrame
   useFrame((state) => {
