@@ -5,6 +5,7 @@ import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { useAnimationStore } from '@/lib/useAnimationStore';
+import Orbitals from './Orbitals';
 
 // Easing function for bounce effect
 function easeOutBack(x: number): number {
@@ -26,6 +27,7 @@ export default function Atom({ position, type, label, isActive, onClick, animati
   const meshRef = useRef<THREE.Mesh>(null);
   const glowRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
+  const [orbitalIntensity, setOrbitalIntensity] = useState(0);
   const mousePosition = useAnimationStore((s) => s.mousePosition);
   const groupRef = useRef<THREE.Group>(null);
   const originalPosition = useRef(new THREE.Vector3(...position));
@@ -82,6 +84,10 @@ export default function Atom({ position, type, label, isActive, onClick, animati
     if (glowRef.current) {
       glowRef.current.scale.setScalar(animatedScale * (1.5 + proximityGlow * 2));
     }
+
+    // Update orbital intensity based on proximity or active state
+    const targetOrbitalIntensity = isActive ? 1 : (distance < 1.2 ? (1 - distance / 1.2) : 0);
+    setOrbitalIntensity(prev => prev + (targetOrbitalIntensity - prev) * 0.1);
   });
 
   return (
@@ -111,6 +117,10 @@ export default function Atom({ position, type, label, isActive, onClick, animati
           <sphereGeometry args={[baseSize, 16, 16]} />
           <meshBasicMaterial color={color} transparent opacity={(isActive ? 0.3 : 0.15) * animatedOpacity} />
         </mesh>
+      )}
+
+      {isClickable && (
+        <Orbitals visible={orbitalIntensity > 0.01} intensity={orbitalIntensity} />
       )}
 
       {isClickable && hovered && label && (
