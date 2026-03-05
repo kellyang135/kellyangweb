@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Crystal } from '@/components/Crystal';
 import { Panel } from '@/components/Panel';
 import { useAnimationStore } from '@/lib/useAnimationStore';
@@ -9,6 +9,17 @@ export default function Home() {
   const [activeNode, setActiveNode] = useState<string | null>(null);
   const phase = useAnimationStore((s) => s.phase);
   const setPhase = useAnimationStore((s) => s.setPhase);
+  const setIsMobile = useAnimationStore((s) => s.setIsMobile);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, [setIsMobile]);
 
   const handleNodeClick = (nodeId: string) => {
     if (activeNode === nodeId) {
