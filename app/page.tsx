@@ -7,7 +7,6 @@ import { useAnimationStore } from '@/lib/useAnimationStore';
 
 export default function Home() {
   const [activeNode, setActiveNode] = useState<string | null>(null);
-  const phase = useAnimationStore((s) => s.phase);
   const setPhase = useAnimationStore((s) => s.setPhase);
   const setIsMobile = useAnimationStore((s) => s.setIsMobile);
 
