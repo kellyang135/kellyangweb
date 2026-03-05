@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Crystal } from '@/components/Crystal';
 import { Panel } from '@/components/Panel';
+import InteractiveTitle from '@/components/InteractiveTitle';
 import { useAnimationStore } from '@/lib/useAnimationStore';
 
 export default function Home() {
@@ -35,21 +36,13 @@ export default function Home() {
     setTimeout(() => {
       setActiveNode(null);
       setPhase('idle');
-    }, 600);
+    }, 800); // Longer timeout for smoother close
   };
 
   return (
     <main className="h-screen w-screen overflow-hidden bg-crystal-bg">
-      {/* Title overlay - positioned above the cube */}
-      <div
-        className={`fixed inset-x-0 top-0 flex justify-center pt-8 sm:pt-12 pointer-events-none z-10 transition-all duration-300 ${
-          activeNode ? 'opacity-0' : 'opacity-100'
-        }`}
-      >
-        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-light text-crystal-muted/70 tracking-wide lowercase">
-          kelly yang
-        </h1>
-      </div>
+      {/* Interactive title overlay */}
+      <InteractiveTitle visible={!activeNode} />
 
       {/* Crystal */}
       <div

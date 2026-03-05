@@ -105,14 +105,16 @@ function CrystalScene({ activeNode, onNodeClick, isPanelOpen }: CrystalSceneProp
     if (!groupRef.current) return;
 
     // Set target based on phase
-    if (phase === 'open' || phase === 'transitioning') {
+    const isOpen = phase === 'open' || phase === 'transitioning';
+    if (isOpen) {
       targetPosition.current.set(-0.5, 0, 0); // Drift left when panel open
     } else {
       targetPosition.current.set(0, 0, 0);
     }
 
-    // Smooth interpolation
-    currentPosition.current.lerp(targetPosition.current, 0.05);
+    // Smooth interpolation - slower when closing for gentler return
+    const lerpSpeed = isOpen ? 0.05 : 0.02;
+    currentPosition.current.lerp(targetPosition.current, lerpSpeed);
     groupRef.current.position.copy(currentPosition.current);
   });
 
