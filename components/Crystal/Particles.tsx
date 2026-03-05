@@ -6,18 +6,19 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useAnimationStore } from '@/lib/useAnimationStore';
 
-const PARTICLE_COUNT = 40;
-const PARTICLE_COUNT_MOBILE = 20;
-const BOUNDS = 3;
-const ATTRACTION_STRENGTH = 0.02;
-const DRIFT_SPEED = 0.1;
+// Calmer, more ambient particle settings
+const PARTICLE_COUNT = 25;
+const PARTICLE_COUNT_MOBILE = 12;
+const BOUNDS = 4;
+const ATTRACTION_STRENGTH = 0.004; // Much gentler attraction
+const DRIFT_SPEED = 0.02; // Slower drift
 
 export default function Particles() {
   const pointsRef = useRef<THREE.Points>(null);
   const mousePosition = useAnimationStore((s) => s.mousePosition);
   const isMobile = useAnimationStore((s) => s.isMobile);
 
-  // Pre-allocate reusable Vector3 objects to avoid GC pressure in animation loop
+  // Pre-allocate reusable Vector3 objects
   const tempParticlePos = useRef(new THREE.Vector3());
   const tempToMouse = useRef(new THREE.Vector3());
 
@@ -41,7 +42,7 @@ export default function Particles() {
     return [pos, vel];
   }, [count]);
 
-  useFrame((state, delta) => {
+  useFrame(() => {
     if (!pointsRef.current) return;
 
     const posArray = pointsRef.current.geometry.attributes.position.array as Float32Array;
@@ -54,19 +55,19 @@ export default function Particles() {
       tempToMouse.current.copy(mousePosition).sub(tempParticlePos.current);
       const distance = tempToMouse.current.length();
 
-      // Attraction when close to cursor (within 2 units)
-      if (distance < 2 && distance > 0.1) {
-        const attraction = tempToMouse.current.normalize().multiplyScalar(ATTRACTION_STRENGTH * (1 - distance / 2));
+      // Very gentle attraction when close to cursor (within 2.5 units)
+      if (distance < 2.5 && distance > 0.3) {
+        const attraction = tempToMouse.current.normalize().multiplyScalar(ATTRACTION_STRENGTH * (1 - distance / 2.5));
         velocities[i].add(attraction);
       }
 
-      // Apply velocity with damping
-      velocities[i].multiplyScalar(0.98);
+      // Apply velocity with stronger damping for calmer motion
+      velocities[i].multiplyScalar(0.96);
 
-      // Random drift
-      velocities[i].x += (Math.random() - 0.5) * 0.001;
-      velocities[i].y += (Math.random() - 0.5) * 0.001;
-      velocities[i].z += (Math.random() - 0.5) * 0.001;
+      // Very subtle random drift
+      velocities[i].x += (Math.random() - 0.5) * 0.0003;
+      velocities[i].y += (Math.random() - 0.5) * 0.0003;
+      velocities[i].z += (Math.random() - 0.5) * 0.0003;
 
       // Update position
       posArray[idx] += velocities[i].x;
@@ -92,10 +93,10 @@ export default function Particles() {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.03}
+        size={0.025}
         color="#4fd1c5"
         transparent
-        opacity={0.6}
+        opacity={0.4}
         sizeAttenuation
         blending={THREE.AdditiveBlending}
       />

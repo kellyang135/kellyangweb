@@ -37,9 +37,9 @@ export default function Bond({ start, end, opacity = 0.2, animationProgress = 1 
     if (lineRef.current) {
       const mat = lineRef.current.material as THREE.LineBasicMaterial;
 
-      // Calculate distance from mouse to bond midpoint
+      // Calculate distance from mouse to bond midpoint - subtle glow
       const distance = mousePosition.distanceTo(midpoint);
-      const proximityBoost = distance < 1.5 ? (1 - distance / 1.5) * 0.3 : 0;
+      const proximityBoost = distance < 1.2 ? (1 - distance / 1.2) * 0.12 : 0;
 
       mat.opacity = (opacity + proximityBoost) * animationProgress;
     }

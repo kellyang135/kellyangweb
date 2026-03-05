@@ -1,7 +1,6 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { useEffect, useState } from 'react';
 import { useAnimationStore } from '@/lib/useAnimationStore';
 import AboutContent from './sections/AboutContent';
 import ResearchContent from './sections/ResearchContent';
@@ -24,37 +23,9 @@ const contentMap: Record<string, React.ComponentType> = {
   contact: ContactContent,
 };
 
-function useIsDesktop() {
-  const [isDesktop, setIsDesktop] = useState(false);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(min-width: 1024px)');
-    setIsDesktop(mediaQuery.matches);
-    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
-    mediaQuery.addEventListener('change', handler);
-    return () => mediaQuery.removeEventListener('change', handler);
-  }, []);
-
-  return isDesktop;
-}
-
 export default function Panel({ activeNode, onClose }: PanelProps) {
   const Content = activeNode ? contentMap[activeNode] : null;
-  const isDesktop = useIsDesktop();
   const phase = useAnimationStore((s) => s.phase);
-
-  // Crystal growth animation - starts thin, expands to full width
-  const panelVariants = {
-    initial: isDesktop
-      ? { scaleX: 0, opacity: 0, originX: 1 }
-      : { scaleY: 0, opacity: 0, originY: 1 },
-    animate: isDesktop
-      ? { scaleX: 1, opacity: 1, originX: 1 }
-      : { scaleY: 1, opacity: 1, originY: 1 },
-    exit: isDesktop
-      ? { scaleX: 0, opacity: 0, originX: 1 }
-      : { scaleY: 0, opacity: 0, originY: 1 },
-  };
 
   const showPanel = phase === 'transitioning' || phase === 'open';
 
@@ -62,44 +33,42 @@ export default function Panel({ activeNode, onClose }: PanelProps) {
     <AnimatePresence>
       {activeNode && Content && showPanel && (
         <>
-          {/* Backdrop */}
+          {/* Backdrop - click to close */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm"
+            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
             onClick={onClose}
           />
 
-          {/* Crystal growth panel */}
+          {/* Centered modal */}
           <motion.div
-            initial={panelVariants.initial}
-            animate={panelVariants.animate}
-            exit={panelVariants.exit}
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
             transition={{
-              duration: 0.5,
-              ease: [0.22, 1, 0.36, 1], // Custom easing for crystal feel
+              duration: 0.4,
+              ease: [0.22, 1, 0.36, 1],
             }}
-            className="fixed z-50 bg-[#12121a]/95 border-white/10 backdrop-blur-xl
-              inset-x-0 bottom-0 h-[85vh] rounded-t-2xl border-t
-              lg:inset-y-0 lg:right-0 lg:left-auto lg:bottom-auto lg:w-[60%] lg:h-full lg:rounded-none lg:border-l lg:border-t-0"
+            className="fixed z-50 inset-4 sm:inset-8 lg:inset-16 xl:inset-24
+              bg-[#12121a]/95 backdrop-blur-xl rounded-2xl border border-white/10
+              flex flex-col overflow-hidden"
             style={{
-              boxShadow: '0 0 60px rgba(79, 209, 197, 0.1), inset 0 1px 0 rgba(255,255,255,0.05)',
+              boxShadow: '0 0 80px rgba(79, 209, 197, 0.15), 0 25px 50px rgba(0, 0, 0, 0.5)',
             }}
           >
-            {/* Crystalline edge glow */}
-            <div className="absolute inset-y-0 left-0 w-px bg-gradient-to-b from-transparent via-teal-400/30 to-transparent lg:block hidden" />
+            {/* Subtle corner accents */}
+            <div className="absolute top-0 left-0 w-16 h-16 border-l-2 border-t-2 border-teal-400/20 rounded-tl-2xl" />
+            <div className="absolute top-0 right-0 w-16 h-16 border-r-2 border-t-2 border-teal-400/20 rounded-tr-2xl" />
+            <div className="absolute bottom-0 left-0 w-16 h-16 border-l-2 border-b-2 border-teal-400/20 rounded-bl-2xl" />
+            <div className="absolute bottom-0 right-0 w-16 h-16 border-r-2 border-b-2 border-teal-400/20 rounded-br-2xl" />
 
-            {/* Drag handle - mobile only */}
-            <div className="lg:hidden flex justify-center pt-3 pb-2">
-              <div className="w-12 h-1.5 bg-white/20 rounded-full" />
-            </div>
-
-            {/* Close button - hexagonal style */}
+            {/* Close button */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 lg:top-6 lg:right-6 w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 hover:rotate-90 transition-all duration-300 z-10 border border-white/10"
+              className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 hover:rotate-90 transition-all duration-300 z-10 border border-white/10"
               aria-label="Close panel"
             >
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -107,17 +76,17 @@ export default function Panel({ activeNode, onClose }: PanelProps) {
               </svg>
             </button>
 
-            {/* Content with crystallize animation */}
-            <div className="h-full overflow-y-auto p-6 pt-4 lg:p-8 lg:pt-20">
+            {/* Content */}
+            <div className="flex-1 overflow-y-auto p-6 sm:p-8 lg:p-12">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeNode}
-                  initial={{ opacity: 0, filter: 'blur(8px)', y: 20 }}
+                  initial={{ opacity: 0, filter: 'blur(6px)', y: 15 }}
                   animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
                   exit={{ opacity: 0, filter: 'blur(4px)', y: -10 }}
                   transition={{
-                    duration: 0.4,
-                    delay: 0.2, // Wait for panel to grow
+                    duration: 0.35,
+                    delay: 0.15,
                     ease: [0.22, 1, 0.36, 1],
                   }}
                 >

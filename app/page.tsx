@@ -44,12 +44,8 @@ export default function Home() {
       {/* Interactive title overlay */}
       <InteractiveTitle visible={!activeNode} />
 
-      {/* Crystal */}
-      <div
-        className={`fixed inset-0 transition-all duration-300 ${
-          activeNode ? 'lg:right-[60%] sm:right-[80%]' : 'right-0'
-        }`}
-      >
+      {/* Crystal - stays centered, modal pops over it */}
+      <div className="fixed inset-0">
         <Crystal
           activeNode={activeNode}
           onNodeClick={handleNodeClick}

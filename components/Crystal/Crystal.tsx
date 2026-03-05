@@ -46,9 +46,6 @@ function CrystalScene({ activeNode, onNodeClick, isPanelOpen }: CrystalSceneProp
   const planeRef = useRef(new THREE.Plane(new THREE.Vector3(0, 0, 1), 0));
   const setMousePosition = useAnimationStore((s) => s.setMousePosition);
   const isMobile = useAnimationStore((s) => s.isMobile);
-  const targetPosition = useRef(new THREE.Vector3(0, 0, 0));
-  const currentPosition = useRef(new THREE.Vector3(0, 0, 0));
-  const phase = useAnimationStore((s) => s.phase);
 
   // Track mouse position in 3D space
   useFrame(({ camera, pointer }) => {
@@ -98,24 +95,6 @@ function CrystalScene({ activeNode, onNodeClick, isPanelOpen }: CrystalSceneProp
     if (groupRef.current && !isPanelOpen) {
       groupRef.current.rotation.y += delta * 0.03;
     }
-  });
-
-  // Smooth cube drift when panel opens/closes
-  useFrame(() => {
-    if (!groupRef.current) return;
-
-    // Set target based on phase
-    const isOpen = phase === 'open' || phase === 'transitioning';
-    if (isOpen) {
-      targetPosition.current.set(-0.5, 0, 0); // Drift left when panel open
-    } else {
-      targetPosition.current.set(0, 0, 0);
-    }
-
-    // Smooth interpolation - slower when closing for gentler return
-    const lerpSpeed = isOpen ? 0.05 : 0.02;
-    currentPosition.current.lerp(targetPosition.current, lerpSpeed);
-    groupRef.current.position.copy(currentPosition.current);
   });
 
   // Create atom position map for bonds

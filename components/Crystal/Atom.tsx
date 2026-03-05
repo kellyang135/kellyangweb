@@ -56,14 +56,14 @@ export default function Atom({ position, type, label, isActive, onClick, animati
     const toMouse = tempVec.current.copy(mousePosition).sub(originalPosition.current);
     const distance = toMouse.length();
 
-    // Magnetic attraction (subtle drift toward cursor)
-    const attractionRadius = 1.5;
-    if (distance < attractionRadius && distance > 0.1) {
-      const strength = 0.03 * (1 - distance / attractionRadius);
+    // Very subtle magnetic attraction (gentle drift toward cursor)
+    const attractionRadius = 1.2;
+    if (distance < attractionRadius && distance > 0.2) {
+      const strength = 0.008 * (1 - distance / attractionRadius); // Much gentler
       const targetOffset = toMouse.normalize().multiplyScalar(strength);
-      currentOffset.current.lerp(targetOffset, 0.1);
+      currentOffset.current.lerp(targetOffset, 0.05); // Slower response
     } else {
-      currentOffset.current.lerp(zeroVec.current, 0.05);
+      currentOffset.current.lerp(zeroVec.current, 0.03); // Slower return
     }
 
     // Apply offset to group position
@@ -73,24 +73,24 @@ export default function Atom({ position, type, label, isActive, onClick, animati
       position[2] + currentOffset.current.z
     );
 
-    // Proximity glow (increase scale and brightness when cursor near)
-    const proximityGlow = distance < attractionRadius ? (1 - distance / attractionRadius) * 0.1 : 0;
+    // Subtle proximity glow
+    const proximityGlow = distance < attractionRadius ? (1 - distance / attractionRadius) * 0.05 : 0;
 
-    // Pulse animation for clickable atoms
+    // Gentle pulse animation for clickable atoms
     if (isClickable && !isActive && animationProgress >= 1) {
-      const pulse = Math.sin(state.clock.elapsedTime * 2) * 0.02;
+      const pulse = Math.sin(state.clock.elapsedTime * 1.5) * 0.015; // Slower, smaller pulse
       meshRef.current.scale.setScalar(animatedScale * (1 + pulse + proximityGlow));
     } else {
       meshRef.current.scale.setScalar(animatedScale * (1 + proximityGlow));
     }
 
     if (glowRef.current) {
-      glowRef.current.scale.setScalar(animatedScale * (1.5 + proximityGlow * 2));
+      glowRef.current.scale.setScalar(animatedScale * (1.5 + proximityGlow));
     }
 
-    // Update orbital intensity based on proximity or active state
-    const targetOrbitalIntensity = isActive ? 1 : (distance < 1.2 ? (1 - distance / 1.2) : 0);
-    setOrbitalIntensity(prev => prev + (targetOrbitalIntensity - prev) * 0.1);
+    // Update orbital intensity - only show when very close or active
+    const targetOrbitalIntensity = isActive ? 0.8 : (distance < 0.8 ? (1 - distance / 0.8) * 0.5 : 0);
+    setOrbitalIntensity(prev => prev + (targetOrbitalIntensity - prev) * 0.08);
   });
 
   return (
