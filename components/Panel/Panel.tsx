@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { useAnimationStore } from '@/lib/useAnimationStore';
 import AboutContent from './sections/AboutContent';
 import ResearchContent from './sections/ResearchContent';
 import IndustryContent from './sections/IndustryContent';
@@ -23,14 +24,12 @@ const contentMap: Record<string, React.ComponentType> = {
   contact: ContactContent,
 };
 
-// Hook to detect mobile vs desktop
 function useIsDesktop() {
   const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(min-width: 1024px)');
     setIsDesktop(mediaQuery.matches);
-
     const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
     mediaQuery.addEventListener('change', handler);
     return () => mediaQuery.removeEventListener('change', handler);
@@ -42,69 +41,85 @@ function useIsDesktop() {
 export default function Panel({ activeNode, onClose }: PanelProps) {
   const Content = activeNode ? contentMap[activeNode] : null;
   const isDesktop = useIsDesktop();
+  const phase = useAnimationStore((s) => s.phase);
 
-  // Animation variants based on screen size
+  // Crystal growth animation - starts thin, expands to full width
   const panelVariants = {
-    initial: isDesktop ? { x: '100%' } : { y: '100%' },
-    animate: isDesktop ? { x: 0 } : { y: 0 },
-    exit: isDesktop ? { x: '100%' } : { y: '100%' },
+    initial: isDesktop
+      ? { scaleX: 0, opacity: 0, originX: 1 }
+      : { scaleY: 0, opacity: 0, originY: 1 },
+    animate: isDesktop
+      ? { scaleX: 1, opacity: 1, originX: 1 }
+      : { scaleY: 1, opacity: 1, originY: 1 },
+    exit: isDesktop
+      ? { scaleX: 0, opacity: 0, originX: 1 }
+      : { scaleY: 0, opacity: 0, originY: 1 },
   };
+
+  const showPanel = phase === 'transitioning' || phase === 'open';
 
   return (
     <AnimatePresence>
-      {activeNode && Content && (
+      {activeNode && Content && showPanel && (
         <>
-          {/* Backdrop for closing */}
+          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-black/20"
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm"
             onClick={onClose}
           />
 
-          {/* Panel - Mobile: bottom sheet, Desktop: side panel */}
+          {/* Crystal growth panel */}
           <motion.div
             initial={panelVariants.initial}
             animate={panelVariants.animate}
             exit={panelVariants.exit}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed z-50 bg-[#12121a] border-white/10
+            transition={{
+              duration: 0.5,
+              ease: [0.22, 1, 0.36, 1], // Custom easing for crystal feel
+            }}
+            className="fixed z-50 bg-[#12121a]/95 border-white/10 backdrop-blur-xl
               inset-x-0 bottom-0 h-[85vh] rounded-t-2xl border-t
               lg:inset-y-0 lg:right-0 lg:left-auto lg:bottom-auto lg:w-[60%] lg:h-full lg:rounded-none lg:border-l lg:border-t-0"
+            style={{
+              boxShadow: '0 0 60px rgba(79, 209, 197, 0.1), inset 0 1px 0 rgba(255,255,255,0.05)',
+            }}
           >
+            {/* Crystalline edge glow */}
+            <div className="absolute inset-y-0 left-0 w-px bg-gradient-to-b from-transparent via-teal-400/30 to-transparent lg:block hidden" />
+
             {/* Drag handle - mobile only */}
             <div className="lg:hidden flex justify-center pt-3 pb-2">
               <div className="w-12 h-1.5 bg-white/20 rounded-full" />
             </div>
 
-            {/* Close button */}
+            {/* Close button - hexagonal style */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 lg:top-6 lg:right-6 w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors z-10"
+              className="absolute top-4 right-4 lg:top-6 lg:right-6 w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 hover:rotate-90 transition-all duration-300 z-10 border border-white/10"
               aria-label="Close panel"
             >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M4 4l12 12M16 4L4 16" />
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M3 3l10 10M13 3L3 13" />
               </svg>
             </button>
 
-            {/* Content */}
+            {/* Content with crystallize animation */}
             <div className="h-full overflow-y-auto p-6 pt-4 lg:p-8 lg:pt-20">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeNode}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
+                  initial={{ opacity: 0, filter: 'blur(8px)', y: 20 }}
+                  animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+                  exit={{ opacity: 0, filter: 'blur(4px)', y: -10 }}
+                  transition={{
+                    duration: 0.4,
+                    delay: 0.2, // Wait for panel to grow
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
                 >
                   <Content />
                 </motion.div>
