@@ -8,6 +8,7 @@ import IndustryContent from './sections/IndustryContent';
 import ProjectsContent from './sections/ProjectsContent';
 import EducationContent from './sections/EducationContent';
 import ContactContent from './sections/ContactContent';
+import WritingsContent from './sections/WritingsContent';
 
 interface PanelProps {
   activeNode: string | null;
@@ -21,6 +22,7 @@ const contentMap: Record<string, React.ComponentType> = {
   projects: ProjectsContent,
   education: EducationContent,
   contact: ContactContent,
+  writings: WritingsContent,
 };
 
 export default function Panel({ activeNode, onClose }: PanelProps) {

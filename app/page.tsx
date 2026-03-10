@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Crystal } from '@/components/Crystal';
 import { Panel } from '@/components/Panel';
 import InteractiveTitle from '@/components/InteractiveTitle';
+import NavDropdown from '@/components/NavDropdown';
 import { useAnimationStore } from '@/lib/useAnimationStore';
 
 export default function Home() {
@@ -31,6 +32,17 @@ export default function Home() {
     }
   };
 
+  // Handle clicks from the nav dropdown (no burst animation needed)
+  const handleNavClick = (nodeId: string) => {
+    if (activeNode === nodeId) {
+      handleClose();
+    } else {
+      setActiveNode(nodeId);
+      setPhase('transitioning');
+      setTimeout(() => setPhase('open'), 300);
+    }
+  };
+
   const handleClose = () => {
     setPhase('closing');
     setTimeout(() => {
@@ -41,6 +53,9 @@ export default function Home() {
 
   return (
     <main className="h-screen w-screen overflow-hidden bg-crystal-bg">
+      {/* Navigation dropdown */}
+      <NavDropdown onNodeClick={handleNavClick} activeNode={activeNode} />
+
       {/* Interactive title overlay */}
       <InteractiveTitle visible={!activeNode} />
 

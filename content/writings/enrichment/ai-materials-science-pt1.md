@@ -1,0 +1,20 @@
+---
+title: "ai x materials science pt. 1"
+date: "February 2026"
+description: "Post 'Combining Experiments, Large Language Models, and Theory to Discover Quantum Materials' Seminar Notes & Reflections"
+type: "enrichment"
+slug: "ai-materials-science-pt1"
+---
+This past week, I attended a seminar as part of UC Berkeley's Solid State Technology and Devices Seminar series, partly to supplement my current work in the AIK Lab @ Berkeley, where I've been studying topological semimetal candidates for nanoscale interconnect applications. Lately, I've been thinking a lot about where materials science is heading in the future, specifically how the emerging intersection of AI and physical science might reshape the way experimental research gets done. Through prior research experience, I've experimented with fabricating devices and the physical aspects that come with materials science. But at the same time, I've been keeping up with the recent AI developments religiously, scrolling through tech threads on X, and playing with LLMs & Claude Code to build projects that I thought I would've never had the time and skill to create. 
+Over the past few months at Berkeley, from undergoing my first official MSE and CS classes to building tech infrastructure for the hackathon club I'm in and brainstorming materials candidates for electronic devices, I've gained exposure to both fields and an increasing interest in bringing them together. My goal for myself is to think more seriously about where they overlap and what I actually want to do within that space :D.
+
+Dr. Cubuk's talk felt like a direct window into these thoughts, delivered by someone who has been at the center of it for years, and at a startup I think is doing really innovative cool work. 
+
+Opening with a diagnosis of the core problem in materials research: discovery has historically been slow, fragmented, and heavily dependent on serendipity. Brute-force trial and error still dominates synthesis, valuable knowledge from failed experiments often gets discarded, and the publication incentive system rewards successes while systematically ignoring the informational value of negative results. Periodic Labs, which Dr. Cubuk co-founded with former OpenAI researcher Liam Fedus, is an attempt to fix all of this at once.
+
+The central technical bet is that LLMs can function as reasoning interfaces, working as active participants in the experimental loop. The way it was described, an LLM can propose synthesis recipes based on physical constraints, execute those proposals through tool use, interpret characterization data, and revise its hypotheses accordingly. He was clear that automated characterization, such as interpreting raw instrument output after synthesis, remains the hard near-term problem, but expressed confidence it was solvable. The broader loop he described: the model proposes a recipe, robots mix and process materials, instruments return data, the model interprets and updates. Crucially, this system is designed to learn from failures just as much as successes, accelerating the efficiency and productivity of discovery.
+
+Before Periodic Labs, Dr. Cubuk worked at Google Brain and then Google DeepMind, and co-led the GNoME project, which used large-scale active learning with graph neural networks to discover 2.2 million new crystal structures, of which 380,000 were predicted stable, roughly an order-of-magnitude expansion of the known materials space. GNoME predictions also fed into A-Lab at Lawrence Berkeley National Lab, an autonomous robotic lab that synthesized 41 novel compounds in 17 days with minimal human input. Those two projects clearly seeded the Periodic Labs vision.
+
+Dr. Cubuk's talk made clear that AI isn't just coming to materials science as a better simulation tool. It's being designed to participate in the full experimental loop, from hypothesis to synthesis to characterization to revision.
+Understanding that shift feels essential to me, as a way of thinking within a much larger context of how materials discovery actually happens at scale, and how that process is changing. 
